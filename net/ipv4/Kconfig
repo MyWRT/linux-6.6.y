@@ -692,6 +692,13 @@ config TCP_CONG_BRUTAL
 	  TCP Brutal is actively maintained to be in sync with the 
 	  Brutal implementation in Hysteria.
 
+config TCP_CONG_BBR1
+	tristate "BBRv1 TCP"
+	default n
+	help
+
+	  BBRv1, for testing.
+
 choice
 	prompt "Default TCP congestion control"
 	default DEFAULT_CUBIC
@@ -728,6 +735,9 @@ choice
 
 	config DEFAULT_BBR
 		bool "BBR" if TCP_CONG_BBR=y
+
+	config DEFAULT_BBR1
+		bool "BBR1" if TCP_CONG_BBR1=y
 
 	config DEFAULT_RENO
 		bool "Reno"
