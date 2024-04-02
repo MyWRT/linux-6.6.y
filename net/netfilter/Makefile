@@ -135,6 +135,10 @@ obj-$(CONFIG_NFT_SYNPROXY)	+= nft_synproxy.o
 
 obj-$(CONFIG_NFT_NAT)		+= nft_chain_nat.o
 
+obj-$(CONFIG_NFT_FULLCONE)		+= nft_fullcone.o
+nft_fullcone-objs 			:= nf_nat_fullcone.o \
+						nft_ext_fullcone.o
+
 # nf_tables netdev
 obj-$(CONFIG_NFT_DUP_NETDEV)	+= nft_dup_netdev.o
 obj-$(CONFIG_NFT_FWD_NETDEV)	+= nft_fwd_netdev.o
