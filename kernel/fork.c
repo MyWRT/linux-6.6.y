@@ -101,11 +101,19 @@
 #include <linux/iommu.h>
 #include <linux/tick.h>
 
+#ifdef CONFIG_USER_NS
+#include <linux/user_namespace.h>
+#endif
+
 #include <asm/pgalloc.h>
 #include <linux/uaccess.h>
 #include <asm/mmu_context.h>
 #include <asm/cacheflush.h>
 #include <asm/tlbflush.h>
+
+#ifdef CONFIG_SCHED_BORE
+#include <linux/sched/bore.h>
+#endif // CONFIG_SCHED_BORE
 
 #include <trace/events/sched.h>
 
@@ -2629,6 +2637,10 @@ __latent_entropy struct task_struct *copy_process(
 	 * Need tasklist lock for parent etc handling!
 	 */
 	write_lock_irq(&tasklist_lock);
+#ifdef CONFIG_SCHED_BORE
+	if (likely(p->pid))
+		sched_clone_bore(p, current, clone_flags, p->start_time);
+#endif // CONFIG_SCHED_BORE
 
 	/* CLONE_PARENT re-uses the old parent */
 	if (clone_flags & (CLONE_PARENT|CLONE_THREAD)) {
