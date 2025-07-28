@@ -591,6 +591,8 @@ __u32 cookie_v6_init_sequence(const struct sk_buff *skb, __u16 *mss);
 #endif
 /* tcp_output.c */
 
+u32 tcp_tso_autosize(const struct sock *sk, unsigned int mss_now,
+                               int min_tso_segs);
 void tcp_skb_entail(struct sock *sk, struct sk_buff *skb);
 void tcp_mark_push(struct tcp_sock *tp, struct sk_buff *skb);
 void __tcp_push_pending_frames(struct sock *sk, unsigned int cur_mss,
@@ -1140,6 +1142,9 @@ struct tcp_congestion_ops {
 
 	/* react to a specific lost skb (optional) */
 	void (*skb_marked_lost)(struct sock *sk, const struct sk_buff *skb);
+
+ 	/* suggest number of segments for each skb to transmit (optional) */
+ 	u32 (*tso_segs_goal)(struct sock *sk);
 
 	/* call when packets are delivered to update cwnd and pacing rate,
 	 * after all the ca_state processing. (optional)
